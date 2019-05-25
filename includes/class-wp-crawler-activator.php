@@ -61,9 +61,13 @@ class Wp_Crawler_Activator {
 	}
 
 	private function activate_crawl_schedule_event() {
-		if ( ! wp_next_scheduled( 'crawl_schedule_event' ) ) {
-			wp_schedule_event( time(), '30_minutes', 'crawl_schedule_event' );
+		if ( ! wp_next_scheduled( 'crawl_link_schedule_event' ) ) {
+			wp_schedule_event( time(), '30_minutes', 'crawl_link_schedule_event' );
 		}
+
+        if ( ! wp_next_scheduled( 'crawl_data_schedule_event' ) ) {
+            wp_schedule_event( time(), '30_minutes', 'crawl_data_schedule_event' );
+        }
 	}
 
 	public function setup_db() {

@@ -1,4 +1,5 @@
 <?php
+/** @noinspection AutoloadingIssuesInspection */
 
 /**
  * Fired during plugin deactivation
@@ -30,7 +31,8 @@ class Wp_Crawler_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+        wp_clear_scheduled_hook('crawl_link_schedule_event');
+        wp_clear_scheduled_hook('crawl_data_schedule_event');
 	}
 
 }

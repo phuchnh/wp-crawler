@@ -136,6 +136,7 @@ class Wp_Crawler_Admin {
 		/** @var \TypeRocket\Register\Page $menu */
 		$menu = tr_page( $resource, 'index', __( 'Crawler Settings' ) );
 		$menu->setIcon( 'scissors' )->useController()->removeTitle();
+        $menu->mapAction('PUT', 'enable');
 		$menu->apply( $sub_menus )->setArgument( 'menu', __( 'WP Crawler' ) );
 
 		return $menu;
@@ -213,7 +214,7 @@ class Wp_Crawler_Admin {
 	 *
 	 * @return mixed
 	 */
-	private function add_sub_menu_pages( string $resource, array $settings ) {
+	private function add_sub_menu_pages( $resource, array $settings ) {
 		$pages = [];
 		foreach ( $settings as $key => $config ) {
 			/** @var \TypeRocket\Register\Page $page */
@@ -235,12 +236,22 @@ class Wp_Crawler_Admin {
 		return $pages;
 	}
 
-	/**
-	 * @return  void
-	 */
-	public function handle_crawl_schedule_event() {
+    /**
+     * Execute crawl links
+     * @return  void
+     * @throws \Exception
+     */
+	public function handle_crawl_link_schedule_event() {
 		( new \App\Commands\CrawlLink() )->exec();
-		( new \App\Commands\CrawData() )->exec();
 	}
+
+    /**
+     * Execute crawl data
+     * @return  void
+     * @throws \Exception
+     */
+    public function handle_crawl_data_schedule_event() {
+        ( new \App\Commands\CrawData() )->exec();
+    }
 
 }

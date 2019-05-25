@@ -135,7 +135,7 @@ class CrawlPreviewController extends Controller {
 	 *
 	 * @return string
 	 */
-	private function link( string $url ) {
+	private function link( $url ) {
 		if ( preg_match( '/^(https?:\/\/).*$/i', $url ) > 0 ) {
 			return $url;
 		}
