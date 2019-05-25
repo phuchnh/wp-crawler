@@ -18,7 +18,11 @@ class CrawlSettingController extends Controller {
 	 * @return mixed
 	 */
 	public function index() {
-		return tr_view( 'crawls.settings.index' );
+        $form = tr_form('crawl_setting', 'enable');
+		return tr_view( 'crawls.settings.index' , [
+		    'form' => $form,
+		    'crawl_status' => $this->get_crawl_status()
+        ]);
 	}
 
 	/**
@@ -129,4 +133,33 @@ class CrawlSettingController extends Controller {
 
 		return tr_redirect()->toPage( $this->resource, 'index' );
 	}
+
+    /**
+     * Enable crawler
+     */
+    public function enable() {
+        $enable = isset($_POST['enable']) ? true : false;
+        if (!$enable) {
+            wp_clear_scheduled_hook('crawl_link_schedule_event');
+            wp_clear_scheduled_hook('crawl_data_schedule_event');
+            $this->response->setMessage('Success');
+            return $this->response;
+        }
+        if (! wp_next_scheduled('crawl_link_schedule_event')) {
+            wp_schedule_event(time(), '30_minutes', 'crawl_link_schedule_event');
+        }
+
+        if (! wp_next_scheduled('crawl_data_schedule_event')) {
+            wp_schedule_event(time(), '30_minutes', 'crawl_data_schedule_event');
+        }
+        
+        $this->response->setMessage('Success');
+        return $this->response;
+    }
+
+    private function get_crawl_status() {
+        $crawl_link = is_object(wp_get_scheduled_event('crawl_link_schedule_event'));
+        $craw_data = is_object(wp_get_scheduled_event('crawl_data_schedule_event'));
+        return $crawl_link && $craw_data;
+    }
 }

@@ -169,9 +169,8 @@ class Wp_Crawler {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'typerocket_loaded', $plugin_admin, 'typerocket_loaded' );
-		$this->loader->add_action( 'crawl_schedule_event', $plugin_admin, 'handle_crawl_schedule_event' );
-
-
+		$this->loader->add_action( 'crawl_link_schedule_event', $plugin_admin, 'handle_crawl_link_schedule_event' );
+		$this->loader->add_action( 'crawl_data_schedule_event', $plugin_admin, 'handle_crawl_data_schedule_event' );
 	}
 
 	/**
